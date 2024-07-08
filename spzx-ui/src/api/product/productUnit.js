@@ -34,3 +34,11 @@ export function updateProductUnit(data) {
       data: data
     })
 }
+
+// 删除商品单位
+export function delProductUnit(id) {
+    return request({
+      url: '/product/productUnit/' + id,
+      method: 'delete'
+    })
+}

@@ -45,6 +45,18 @@ export function delBrand(id) {
     })
 }
 
+// 获取全部品牌
+export function getBrandAll() {
+    return request({
+      url: '/product/brand/getBrandAll',
+      method: 'get'
+    })
+}
+
+
+
+
+
 const brandList = ref([
     {
         createTime: "2024-01-09 10:15:05",

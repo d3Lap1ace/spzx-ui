@@ -1,5 +1,5 @@
 <script setup name="ProductUnit">
-import { listProductUnit,addProductUnit,getProductUnit,updateProductUnit } from "@/api/product/productUnit";
+import { listProductUnit,addProductUnit,getProductUnit,updateProductUnit,delProductUnit } from "@/api/product/productUnit";
 import { getCurrentInstance} from "vue";
 
 const { proxy } = getCurrentInstance();
@@ -20,6 +20,9 @@ const open = ref(false)
 const ids = ref([]);
 //定义单选控制模型
 const single = ref(true);
+//定义多选控制模型
+const multiple = ref(true);
+
 
 // ==========================================================================================================================================================================
 
@@ -84,18 +87,7 @@ function handleAdd(){
     open.value = true;
     title.value = "添加单位商品";
 }
-// 提交按钮
-function submitForm(){
-    proxy.$refs["productUnitRef"].validate(valid => {
-        if (valid) {
-            addProductUnit(form.value).then(response => {
-                proxy.$modal.msgSuccess("新增成功");
-                open.value = false;
-                getList();
-            });
-        }
-    });
-}
+
 // ==========================================================================================================================================================================
 /** 修改按钮操作 */
 function handleUpdate(row) {
@@ -129,11 +121,24 @@ function submitForm(){
     });
 }
 
+// 删除按钮操作
+function handleDelete(row) {
+  const _ids = row.id || ids.value;
+  proxy.$modal.confirm('是否确认删除商品单位编号为"' + _ids + '"的数据项？').then(function() {
+    return delProductUnit(_ids);
+  }).then(() => {
+    getList();
+    proxy.$modal.msgSuccess("删除成功");
+  }).catch(() => {});
+}
+
+
 // 多选框选中数据
 function handleSelectionChange(selection) {
   //debugger
   ids.value = selection.map(item => item.id);
   single.value = selection.length != 1;
+  multiple.value = !selection.length;
 }
 
 
@@ -172,7 +177,7 @@ getList();
                 <el-button type="success" plain icon="Edit" @click="handleUpdate">修改</el-button>
             </el-col>
             <el-col :span="1.5">
-                <el-button type="danger" plain icon="Delete">删除</el-button>
+                <el-button type="danger" plain icon="Delete" @click="handleDelete">删除</el-button>
             </el-col>
             <right-toolbar></right-toolbar>
         </el-row>
@@ -189,7 +194,7 @@ getList();
                 class-name="small-padding fixed-width">
                 <template #default="scope">
                     <el-button link type="primary" icon="Edit" @click="handleUpdate(scope.row)">修改</el-button>
-                    <el-button link type="primary" icon="Delete">删除</el-button>
+                    <el-button link type="primary" icon="Delete" @click="handleDelete(scope.row)">删除</el-button>
                 </template>
             </el-table-column>
         </el-table>
