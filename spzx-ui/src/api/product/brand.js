@@ -56,18 +56,3 @@ export function getBrandAll() {
 
 
 
-
-const brandList = ref([
-    {
-        createTime: "2024-01-09 10:15:05",
-        id: 1,
-        name: "华为",
-        logo: "http://139.198.127.41:9000/sph/20230506/华为.png",
-    },
-    {
-        createTime: "2024-01-19 10:15:05",
-        id: 2,
-        name: "小米",
-        logo: "http://139.198.127.41:9000/sph/20240202/xm.png",
-    },
-]);

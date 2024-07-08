@@ -3,7 +3,7 @@
 import {
     listBrand,
     addBrand,
-    getBrandAll,
+    getBrand,
     updateBrand,
 } from "@/api/product/brand";
 import { getToken } from "@/utils/auth.js";
@@ -95,7 +95,7 @@ function cancel() {
 function handleUpdate(row) {
     reset();
     const _id = row.id;
-    getBrandAll(_id).then((response) => {
+    getBrand(_id).then((response) => {
         form.value = response.data;
         open.value = true;
         title.value = "修改品牌";
