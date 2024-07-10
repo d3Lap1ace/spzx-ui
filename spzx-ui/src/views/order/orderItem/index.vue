@@ -242,7 +242,7 @@ import {
     delOrderItem,
     addOrderItem,
     updateOrderItem,
-} from "@/api/user/orderItem";
+} from "@/api/order/orderItem";
 
 const { proxy } = getCurrentInstance();
 
@@ -395,7 +395,7 @@ function handleDelete(row) {
 /** 导出按钮操作 */
 function handleExport() {
     proxy.download(
-        "user/orderItem/export",
+        "order/orderItem/export",
         {
             ...queryParams.value,
         },

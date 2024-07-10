@@ -3,7 +3,7 @@ import request from '@/utils/request'
 // 查询订单项信息列表
 export function listOrderItem(query) {
   return request({
-    url: '/user/orderItem/list',
+    url: '/order/orderItem/list',
     method: 'get',
     params: query
   })
@@ -12,7 +12,7 @@ export function listOrderItem(query) {
 // 查询订单项信息详细
 export function getOrderItem(id) {
   return request({
-    url: '/user/orderItem/' + id,
+    url: '/order/orderItem/' + id,
     method: 'get'
   })
 }
@@ -20,7 +20,7 @@ export function getOrderItem(id) {
 // 新增订单项信息
 export function addOrderItem(data) {
   return request({
-    url: '/user/orderItem',
+    url: '/order/orderItem',
     method: 'post',
     data: data
   })
@@ -29,7 +29,7 @@ export function addOrderItem(data) {
 // 修改订单项信息
 export function updateOrderItem(data) {
   return request({
-    url: '/user/orderItem',
+    url: '/order/orderItem',
     method: 'put',
     data: data
   })
@@ -38,7 +38,7 @@ export function updateOrderItem(data) {
 // 删除订单项信息
 export function delOrderItem(id) {
   return request({
-    url: '/user/orderItem/' + id,
+    url: '/order/orderItem/' + id,
     method: 'delete'
   })
 }
