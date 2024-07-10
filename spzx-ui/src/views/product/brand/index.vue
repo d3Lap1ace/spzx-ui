@@ -7,7 +7,7 @@ import {
     updateBrand,
 } from "@/api/product/brand";
 import { getToken } from "@/utils/auth.js";
-import { ElMessage,ElMessageBox } from "element-plus";
+import { ElMessage, ElMessageBox } from "element-plus";
 
 //定义分页列表数据模型
 const brandList = ref([]);
@@ -193,7 +193,12 @@ getList();
         <!-- 功能按钮栏 -->
         <el-row :gutter="10" class="mb8">
             <el-col :span="1.5">
-                <el-button type="primary" plain icon="Plus" @click="handleAdd"
+                <el-button
+                    type="primary"
+                    plain
+                    icon="Plus"
+                    @click="handleAdd"
+                    v-hasPermi="['product:brand:edit']"
                     >新增</el-button
                 >
             </el-col>
