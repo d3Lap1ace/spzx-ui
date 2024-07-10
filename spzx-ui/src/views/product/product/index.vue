@@ -597,7 +597,6 @@ function handleAdd() {
     title.value = "添加商品";
     console.log(form.value);
 
-
     //清空
     activeIndex.value = 0;
     sliderTempUrlList.value = [];

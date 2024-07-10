@@ -1,6 +1,12 @@
 <script setup name="ProductUnit">
-import { listProductUnit,addProductUnit,getProductUnit,updateProductUnit,delProductUnit } from "@/api/product/productUnit";
-import { getCurrentInstance} from "vue";
+import {
+    listProductUnit,
+    addProductUnit,
+    getProductUnit,
+    updateProductUnit,
+    delProductUnit,
+} from "@/api/product/productUnit";
+import { getCurrentInstance } from "vue";
 
 const { proxy } = getCurrentInstance();
 
@@ -13,16 +19,15 @@ const loading = ref(true);
 //定义隐藏搜索控制模型
 const showSearch = ref(true);
 //新增与修改弹出层标题模型
-const title = ref("")
+const title = ref("");
 //新增与修改弹出层控制模型
-const open = ref(false)
+const open = ref(false);
 //定义批量操作id列表模型
 const ids = ref([]);
 //定义单选控制模型
 const single = ref(true);
 //定义多选控制模型
 const multiple = ref(true);
-
 
 // ==========================================================================================================================================================================
 
@@ -31,17 +36,15 @@ const data = reactive({
     queryParams: {
         pageNum: 1,
         pageSize: 5,
-        name: null
+        name: null,
     },
     form: {},
     rules: {
-        name: [
-            {required: true, message: "单位不能为空", trigger: "blur"}
-        ]
-    }
+        name: [{ required: true, message: "单位不能为空", trigger: "blur" }],
+    },
 });
 
-const { queryParams,form,rules } = toRefs(data);
+const { queryParams, form, rules } = toRefs(data);
 
 // ==========================================================================================================================================================================
 
@@ -68,21 +71,21 @@ function resetQuery() {
 // ==========================================================================================================================================================================
 
 // 表单重置
-function reset(){
+function reset() {
     form.value = {
-        id:null,
-        name:null
+        id: null,
+        name: null,
     };
     proxy.resetForm("productUnitRef");
 }
 // 取消按钮
-function cancel(){
+function cancel() {
     open.value = false;
     reset();
 }
 // ==========================================================================================================================================================================
 /** 新增按钮操作 */
-function handleAdd(){
+function handleAdd() {
     reset();
     open.value = true;
     title.value = "添加单位商品";
@@ -92,26 +95,26 @@ function handleAdd(){
 /** 修改按钮操作 */
 function handleUpdate(row) {
     reset();
-    const _id = row.id || ids.value
-    getProductUnit(_id).then(response => {
+    const _id = row.id || ids.value;
+    getProductUnit(_id).then((response) => {
         form.value = response.data;
         open.value = true;
         title.value = "修改商品单位";
-  });
+    });
 }
 
 // 提交按钮
-function submitForm(){
-    proxy.$refs["productUnitRef"].validate(valid => {
-        if(valid) {
+function submitForm() {
+    proxy.$refs["productUnitRef"].validate((valid) => {
+        if (valid) {
             if (form.value.id != null) {
-                updateProductUnit(form.value).then(response => {
+                updateProductUnit(form.value).then((response) => {
                     proxy.$modal.msgSuccess("修改成功");
                     open.value = false;
                     getList();
                 });
-            }else{
-                addProductUnit(form.value).then(response => {
+            } else {
+                addProductUnit(form.value).then((response) => {
                     proxy.$modal.msgSuccess("新增成功");
                     open.value = false;
                     getList();
@@ -123,24 +126,26 @@ function submitForm(){
 
 // 删除按钮操作
 function handleDelete(row) {
-  const _ids = row.id || ids.value;
-  proxy.$modal.confirm('是否确认删除商品单位编号为"' + _ids + '"的数据项？').then(function() {
-    return delProductUnit(_ids);
-  }).then(() => {
-    getList();
-    proxy.$modal.msgSuccess("删除成功");
-  }).catch(() => {});
+    const _ids = row.id || ids.value;
+    proxy.$modal
+        .confirm('是否确认删除商品单位编号为"' + _ids + '"的数据项？')
+        .then(function () {
+            return delProductUnit(_ids);
+        })
+        .then(() => {
+            getList();
+            proxy.$modal.msgSuccess("删除成功");
+        })
+        .catch(() => {});
 }
-
 
 // 多选框选中数据
 function handleSelectionChange(selection) {
-  //debugger
-  ids.value = selection.map(item => item.id);
-  single.value = selection.length != 1;
-  multiple.value = !selection.length;
+    //debugger
+    ids.value = selection.map((item) => item.id);
+    single.value = selection.length != 1;
+    multiple.value = !selection.length;
 }
-
 
 getList();
 </script>
@@ -163,7 +168,9 @@ getList();
                 />
             </el-form-item>
             <el-form-item>
-                <el-button type="primary" icon="Search" @click="handleQuery">搜索</el-button>
+                <el-button type="primary" icon="Search" @click="handleQuery"
+                    >搜索</el-button
+                >
                 <el-button icon="Refresh" @click="resetQuery">重置</el-button>
             </el-form-item>
         </el-form>
@@ -171,19 +178,37 @@ getList();
         <!-- 功能按钮栏 -->
         <el-row :gutter="10" class="mb8">
             <el-col :span="1.5">
-                <el-button type="primary" plain icon="Plus" @click="handleAdd">新增</el-button>
+                <el-button type="primary" plain icon="Plus" @click="handleAdd"
+                    >新增</el-button
+                >
             </el-col>
             <el-col :span="1.5">
-                <el-button type="success" plain icon="Edit" @click="handleUpdate">修改</el-button>
+                <el-button
+                    type="success"
+                    plain
+                    icon="Edit"
+                    @click="handleUpdate"
+                    >修改</el-button
+                >
             </el-col>
             <el-col :span="1.5">
-                <el-button type="danger" plain icon="Delete" @click="handleDelete">删除</el-button>
+                <el-button
+                    type="danger"
+                    plain
+                    icon="Delete"
+                    @click="handleDelete"
+                    >删除</el-button
+                >
             </el-col>
             <right-toolbar></right-toolbar>
         </el-row>
 
         <!-- 数据展示表格 -->
-        <el-table  v-loading="loading" :data="productUnitList" @selection-change="handleSelectionChange" >
+        <el-table
+            v-loading="loading"
+            :data="productUnitList"
+            @selection-change="handleSelectionChange"
+        >
             <el-table-column type="selection" width="55" align="center" />
             <el-table-column label="名称" prop="name" width="200" />
             <el-table-column prop="createTime" label="创建时间" />
@@ -191,10 +216,23 @@ getList();
                 label="操作"
                 align="center"
                 width="200"
-                class-name="small-padding fixed-width">
+                class-name="small-padding fixed-width"
+            >
                 <template #default="scope">
-                    <el-button link type="primary" icon="Edit" @click="handleUpdate(scope.row)">修改</el-button>
-                    <el-button link type="primary" icon="Delete" @click="handleDelete(scope.row)">删除</el-button>
+                    <el-button
+                        link
+                        type="primary"
+                        icon="Edit"
+                        @click="handleUpdate(scope.row)"
+                        >修改</el-button
+                    >
+                    <el-button
+                        link
+                        type="primary"
+                        icon="Delete"
+                        @click="handleDelete(scope.row)"
+                        >删除</el-button
+                    >
                 </template>
             </el-table-column>
         </el-table>
@@ -225,7 +263,9 @@ getList();
             </el-form>
             <template #footer>
                 <div class="dialog-footer">
-                    <el-button type="primary" @click="submitForm">确 定</el-button>
+                    <el-button type="primary" @click="submitForm"
+                        >确 定</el-button
+                    >
                     <el-button @click="cancel">取 消</el-button>
                 </div>
             </template>
